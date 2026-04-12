@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, UserPlus, Settings, Sun, Moon } from "lucide-react";
-import DumbbellIcon from "./DumbbellIcon";
+import { LayoutDashboard, Users, UserPlus, Settings, Sun, Moon, Dumbbell } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 
 const navItems = [
@@ -18,14 +17,13 @@ const CrmSidebar = () => {
     <aside className="fixed left-0 top-0 h-screen w-64 bg-sidebar border-r border-sidebar-border flex flex-col z-50">
       {/* Logo */}
       <div className="p-6 border-b border-sidebar-border">
-        <Link to="/" className="flex items-center gap-3">
-          <DumbbellIcon className="h-8 w-8 text-primary" />
-          <div>
-            <span className="text-xl font-bold text-foreground">Gym</span>
-            <span className="text-xl font-bold text-primary">Kart</span>
-            <div className="text-[10px] uppercase tracking-widest text-muted-foreground">CRM</div>
-          </div>
+        <Link to="/" className="flex items-center gap-2">
+          <Dumbbell className="h-7 w-7 text-primary" />
+          <span className="text-xl font-bold text-foreground">
+            Gym<span className="text-primary neon-glow">Kart</span>
+          </span>
         </Link>
+        <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">CRM</div>
       </div>
 
       {/* Navigation */}
