@@ -49,14 +49,21 @@ const CrmSidebar = () => {
         })}
       </nav>
 
-      {/* Theme Toggle */}
-      <div className="p-4 border-t border-sidebar-border">
+      {/* Footer */}
+      <div className="p-4 border-t border-sidebar-border space-y-1">
         <button
           onClick={toggleTheme}
           className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
         >
           {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           {theme === "dark" ? "Light Mode" : "Dark Mode"}
+        </button>
+        <button
+          onClick={signOut}
+          className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition-all"
+        >
+          <LogOut className="h-5 w-5" />
+          Sign Out
         </button>
       </div>
     </aside>
