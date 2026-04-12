@@ -24,7 +24,6 @@ const CrmSidebar = () => {
           </span>
         </Link>
         <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">CRM</div>
-        </Link>
       </div>
 
       {/* Navigation */}
