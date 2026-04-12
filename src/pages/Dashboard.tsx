@@ -1,5 +1,12 @@
-import { Users, TrendingUp, Phone, CheckCircle, XCircle } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { Users, TrendingUp, Phone, CheckCircle, XCircle, Dumbbell, Target, Activity, Calendar } from "lucide-react";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell,
+  LineChart, Line, CartesianGrid,
+  AreaChart, Area,
+  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+  RadialBarChart, RadialBar, Legend,
+} from "recharts";
 import { Link } from "react-router-dom";
 import DumbbellIcon from "@/components/DumbbellIcon";
 import type { Lead } from "@/data/leads";
@@ -7,6 +14,47 @@ import type { Lead } from "@/data/leads";
 interface DashboardProps {
   leads: Lead[];
 }
+
+// Mock data for gym-specific charts
+const membershipTrend = [
+  { month: "Jan", leads: 12, converted: 4 },
+  { month: "Feb", leads: 18, converted: 7 },
+  { month: "Mar", leads: 25, converted: 10 },
+  { month: "Apr", leads: 30, converted: 14 },
+  { month: "May", leads: 22, converted: 9 },
+  { month: "Jun", leads: 35, converted: 16 },
+];
+
+const gymPopularity = [
+  { gym: "Gold's Gym", members: 85 },
+  { gym: "Cult.fit", members: 72 },
+  { gym: "Anytime", members: 65 },
+  { gym: "Fitness First", members: 55 },
+  { gym: "PowerHouse", members: 45 },
+];
+
+const fitnessCategories = [
+  { category: "Weight Training", value: 90 },
+  { category: "Cardio", value: 75 },
+  { category: "Yoga", value: 60 },
+  { category: "CrossFit", value: 70 },
+  { category: "Swimming", value: 45 },
+  { category: "Zumba", value: 55 },
+];
+
+const revenueByPlan = [
+  { name: "Monthly", value: 30, fill: "hsl(145, 100%, 45%)" },
+  { name: "Quarterly", value: 25, fill: "hsl(200, 80%, 50%)" },
+  { name: "Half-Yearly", value: 20, fill: "hsl(35, 100%, 55%)" },
+  { name: "Annual", value: 25, fill: "hsl(280, 70%, 55%)" },
+];
+
+const tooltipStyle = {
+  backgroundColor: "hsl(230,20%,14%)",
+  border: "1px solid hsl(230,15%,22%)",
+  borderRadius: 8,
+  color: "#fff",
+};
 
 const Dashboard = ({ leads }: DashboardProps) => {
   const totalLeads = leads.length;
@@ -24,20 +72,18 @@ const Dashboard = ({ leads }: DashboardProps) => {
     { label: "Lost", value: lost, icon: XCircle, color: "text-red-400" },
   ];
 
-  // Source chart data
   const sourceCount: Record<string, number> = {};
-  leads.forEach((l) => {
-    sourceCount[l.source] = (sourceCount[l.source] || 0) + 1;
-  });
+  leads.forEach((l) => { sourceCount[l.source] = (sourceCount[l.source] || 0) + 1; });
   const sourceData = Object.entries(sourceCount).map(([name, value]) => ({ name, value }));
 
-  // Status chart data
   const statusData = [
     { name: "New", value: newLeads, color: "hsl(210, 80%, 55%)" },
     { name: "Contacted", value: contacted, color: "hsl(35, 100%, 55%)" },
     { name: "Converted", value: converted, color: "hsl(145, 100%, 45%)" },
     { name: "Lost", value: lost, color: "hsl(0, 80%, 55%)" },
   ].filter((d) => d.value > 0);
+
+  const axisTickStyle = { fill: "hsl(var(--muted-foreground))", fontSize: 11 };
 
   return (
     <div>
@@ -70,24 +116,19 @@ const Dashboard = ({ leads }: DashboardProps) => {
           <span className="text-sm font-bold text-primary">{conversionRate}%</span>
         </div>
         <div className="w-full h-3 rounded-full bg-secondary overflow-hidden">
-          <div
-            className="h-full rounded-full bg-primary transition-all duration-500"
-            style={{ width: `${conversionRate}%` }}
-          />
+          <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${conversionRate}%` }} />
         </div>
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      {/* Row 1: Source + Status */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div className="glass-card neon-border p-6">
           <h3 className="text-lg font-semibold text-foreground mb-4">Leads by Source</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={sourceData}>
-              <XAxis dataKey="name" tick={{ fill: "hsl(230,10%,55%)", fontSize: 12 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: "hsl(230,10%,55%)", fontSize: 12 }} axisLine={false} tickLine={false} />
-              <Tooltip
-                contentStyle={{ backgroundColor: "hsl(230,20%,14%)", border: "1px solid hsl(230,15%,22%)", borderRadius: 8, color: "#fff" }}
-              />
+              <XAxis dataKey="name" tick={axisTickStyle} axisLine={false} tickLine={false} />
+              <YAxis tick={axisTickStyle} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={tooltipStyle} />
               <Bar dataKey="value" fill="hsl(145,100%,45%)" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -102,9 +143,7 @@ const Dashboard = ({ leads }: DashboardProps) => {
                   <Cell key={i} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip
-                contentStyle={{ backgroundColor: "hsl(230,20%,14%)", border: "1px solid hsl(230,15%,22%)", borderRadius: 8, color: "#fff" }}
-              />
+              <Tooltip contentStyle={tooltipStyle} />
             </PieChart>
           </ResponsiveContainer>
           <div className="flex flex-wrap gap-4 justify-center mt-2">
@@ -115,6 +154,84 @@ const Dashboard = ({ leads }: DashboardProps) => {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Row 2: Membership Trend + Gym Popularity */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="glass-card neon-border p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Activity className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">Membership Trend</h3>
+          </div>
+          <ResponsiveContainer width="100%" height={250}>
+            <AreaChart data={membershipTrend}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(230,15%,22%)" />
+              <XAxis dataKey="month" tick={axisTickStyle} axisLine={false} tickLine={false} />
+              <YAxis tick={axisTickStyle} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Area type="monotone" dataKey="leads" stroke="hsl(200,80%,50%)" fill="hsl(200,80%,50%)" fillOpacity={0.15} strokeWidth={2} />
+              <Area type="monotone" dataKey="converted" stroke="hsl(145,100%,45%)" fill="hsl(145,100%,45%)" fillOpacity={0.15} strokeWidth={2} />
+            </AreaChart>
+          </ResponsiveContainer>
+          <div className="flex gap-6 justify-center mt-2">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "hsl(200,80%,50%)" }} /> Leads
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "hsl(145,100%,45%)" }} /> Converted
+            </div>
+          </div>
+        </div>
+
+        <div className="glass-card neon-border p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Target className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">Top Gyms by Leads</h3>
+          </div>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={gymPopularity} layout="vertical">
+              <XAxis type="number" tick={axisTickStyle} axisLine={false} tickLine={false} />
+              <YAxis type="category" dataKey="gym" tick={axisTickStyle} axisLine={false} tickLine={false} width={90} />
+              <Tooltip contentStyle={tooltipStyle} />
+              <Bar dataKey="members" fill="hsl(145,100%,45%)" radius={[0, 6, 6, 0]} barSize={20} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Row 3: Fitness Categories Radar + Revenue by Plan */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="glass-card neon-border p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Dumbbell className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">Fitness Interest Breakdown</h3>
+          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <RadarChart data={fitnessCategories} cx="50%" cy="50%" outerRadius="70%">
+              <PolarGrid stroke="hsl(230,15%,25%)" />
+              <PolarAngleAxis dataKey="category" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }} />
+              <PolarRadiusAxis tick={false} axisLine={false} />
+              <Radar dataKey="value" stroke="hsl(145,100%,45%)" fill="hsl(145,100%,45%)" fillOpacity={0.25} strokeWidth={2} />
+            </RadarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="glass-card neon-border p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Calendar className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">Revenue by Plan Type</h3>
+          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <PieChart>
+              <Pie data={revenueByPlan} cx="50%" cy="50%" outerRadius={100} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                {revenueByPlan.map((entry, i) => (
+                  <Cell key={i} fill={entry.fill} />
+                ))}
+              </Pie>
+              <Tooltip contentStyle={tooltipStyle} />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
       </div>
 

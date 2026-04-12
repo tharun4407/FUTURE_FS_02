@@ -1,15 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, UserPlus, Settings } from "lucide-react";
+import { LayoutDashboard, Users, UserPlus, Settings, Sun, Moon } from "lucide-react";
 import DumbbellIcon from "./DumbbellIcon";
+import { useTheme } from "@/hooks/useTheme";
 
 const navItems = [
   { to: "/", icon: LayoutDashboard, label: "Dashboard" },
   { to: "/leads", icon: Users, label: "Leads" },
   { to: "/add-lead", icon: UserPlus, label: "Add Lead" },
+  { to: "/settings", icon: Settings, label: "Settings" },
 ];
 
 const CrmSidebar = () => {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-sidebar border-r border-sidebar-border flex flex-col z-50">
@@ -46,12 +49,15 @@ const CrmSidebar = () => {
         })}
       </nav>
 
-      {/* Footer */}
+      {/* Theme Toggle */}
       <div className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center gap-3 px-4 py-3 text-sm text-muted-foreground">
-          <Settings className="h-4 w-4" />
-          <span>Settings</span>
-        </div>
+        <button
+          onClick={toggleTheme}
+          className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
+        >
+          {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          {theme === "dark" ? "Light Mode" : "Dark Mode"}
+        </button>
       </div>
     </aside>
   );
