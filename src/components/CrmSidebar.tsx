@@ -1,6 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, UserPlus, Settings, Sun, Moon } from "lucide-react";
-import DumbbellIcon from "./DumbbellIcon";
+import { LayoutDashboard, Users, UserPlus, Settings, Sun, Moon, Dumbbell } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 
 const navItems = [
