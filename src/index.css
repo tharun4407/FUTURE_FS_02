@@ -4,6 +4,54 @@
 
 @layer base {
   :root {
+    /* Light mode */
+    --background: 120 10% 97%;
+    --foreground: 230 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 230 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 25% 12%;
+
+    --primary: 145 100% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 120 8% 92%;
+    --secondary-foreground: 230 20% 20%;
+
+    --muted: 120 8% 92%;
+    --muted-foreground: 230 10% 45%;
+
+    --accent: 145 80% 35%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 120 8% 85%;
+    --input: 120 8% 85%;
+    --ring: 145 100% 35%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 120 10% 95%;
+    --sidebar-foreground: 230 15% 25%;
+    --sidebar-primary: 145 100% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 120 8% 90%;
+    --sidebar-accent-foreground: 230 20% 15%;
+    --sidebar-border: 120 8% 85%;
+    --sidebar-ring: 145 100% 35%;
+
+    --chart-1: 145 100% 35%;
+    --chart-2: 200 80% 50%;
+    --chart-3: 35 100% 55%;
+    --chart-4: 280 70% 55%;
+    --chart-5: 0 80% 55%;
+  }
+
+  .dark {
     --background: 230 25% 10%;
     --foreground: 0 0% 95%;
 
@@ -31,8 +79,6 @@
     --border: 230 15% 22%;
     --input: 230 15% 22%;
     --ring: 145 100% 45%;
-
-    --radius: 0.75rem;
 
     --sidebar-background: 230 25% 8%;
     --sidebar-foreground: 0 0% 85%;
@@ -69,13 +115,21 @@
     @apply bg-card/80 backdrop-blur-xl border border-border rounded-xl;
   }
 
+  .dark .glass-card {
+    @apply bg-card/80;
+  }
+
   .neon-border {
     border-color: hsl(var(--primary) / 0.3);
     box-shadow: inset 0 0 20px hsl(var(--primary) / 0.05);
   }
 
   .neon-glow {
-    text-shadow: var(--neon-glow);
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5), 0 0 30px hsl(var(--primary) / 0.2);
+  }
+
+  .dark .neon-glow {
+    text-shadow: 0 0 10px hsl(145 100% 45% / 0.5), 0 0 30px hsl(145 100% 45% / 0.2);
   }
 
   .hover-lift {
@@ -87,15 +141,27 @@
   }
 
   .status-new {
-    @apply bg-blue-500/20 text-blue-400 border border-blue-500/30;
+    @apply bg-blue-500/20 text-blue-600 border border-blue-500/30;
+  }
+  .dark .status-new {
+    @apply text-blue-400;
   }
   .status-contacted {
-    @apply bg-amber-500/20 text-amber-400 border border-amber-500/30;
+    @apply bg-amber-500/20 text-amber-600 border border-amber-500/30;
+  }
+  .dark .status-contacted {
+    @apply text-amber-400;
   }
   .status-converted {
-    @apply bg-emerald-500/20 text-emerald-400 border border-emerald-500/30;
+    @apply bg-emerald-500/20 text-emerald-600 border border-emerald-500/30;
+  }
+  .dark .status-converted {
+    @apply text-emerald-400;
   }
   .status-lost {
-    @apply bg-red-500/20 text-red-400 border border-red-500/30;
+    @apply bg-red-500/20 text-red-600 border border-red-500/30;
+  }
+  .dark .status-lost {
+    @apply text-red-400;
   }
 }
