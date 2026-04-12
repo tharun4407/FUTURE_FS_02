@@ -13,6 +13,7 @@ const navItems = [
 const CrmSidebar = () => {
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { signOut } = useAuth();
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-sidebar border-r border-sidebar-border flex flex-col z-50">
