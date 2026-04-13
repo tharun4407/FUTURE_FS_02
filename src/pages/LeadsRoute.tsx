@@ -3,10 +3,10 @@ import LeadsPage from "@/pages/Leads";
 import { useLeads } from "@/hooks/useLeads";
 
 const LeadsRoute = () => {
-  const { leads, updateStatus, deleteLead } = useLeads();
+  const { leads, updateStatus, deleteLead, addFollowUp, updateLeadNotes } = useLeads();
   return (
     <CrmLayout>
-      <LeadsPage leads={leads} updateStatus={updateStatus} deleteLead={deleteLead} />
+      <LeadsPage leads={leads} updateStatus={updateStatus} deleteLead={deleteLead} addFollowUp={addFollowUp} updateLeadNotes={updateLeadNotes} />
     </CrmLayout>
   );
 };

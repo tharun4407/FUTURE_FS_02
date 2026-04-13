@@ -1,6 +1,12 @@
 export type LeadStatus = "New" | "Contacted" | "Converted" | "Lost";
 export type LeadSource = "Website" | "Referral" | "Social Media" | "Walk-in" | "Cold Call" | "Email";
 
+export interface FollowUp {
+  id: string;
+  note: string;
+  createdAt: string;
+}
+
 export interface Lead {
   id: string;
   name: string;
@@ -10,6 +16,7 @@ export interface Lead {
   status: LeadStatus;
   gymInterest: string;
   notes: string;
+  followUps: FollowUp[];
   createdAt: string;
 }
 
@@ -23,6 +30,9 @@ export const initialLeads: Lead[] = [
     status: "New",
     gymInterest: "Gold's Gym Koramangala",
     notes: "Interested in 6-month membership",
+    followUps: [
+      { id: "f1", note: "Called and discussed pricing. Will visit gym tomorrow.", createdAt: "2026-04-11" },
+    ],
     createdAt: "2026-04-10",
   },
   {
@@ -34,6 +44,10 @@ export const initialLeads: Lead[] = [
     status: "Contacted",
     gymInterest: "Cult.fit Indiranagar",
     notes: "Looking for group fitness classes",
+    followUps: [
+      { id: "f2", note: "Sent gym brochure via email.", createdAt: "2026-04-09" },
+      { id: "f3", note: "Follow-up call scheduled for Apr 12.", createdAt: "2026-04-10" },
+    ],
     createdAt: "2026-04-08",
   },
   {
@@ -45,6 +59,9 @@ export const initialLeads: Lead[] = [
     status: "Converted",
     gymInterest: "Anytime Fitness HSR",
     notes: "Signed up for annual plan",
+    followUps: [
+      { id: "f4", note: "Signed annual membership. Payment received.", createdAt: "2026-04-06" },
+    ],
     createdAt: "2026-04-05",
   },
   {
@@ -56,6 +73,7 @@ export const initialLeads: Lead[] = [
     status: "New",
     gymInterest: "Fitness First Whitefield",
     notes: "Wants personal trainer",
+    followUps: [],
     createdAt: "2026-04-11",
   },
   {
@@ -67,6 +85,9 @@ export const initialLeads: Lead[] = [
     status: "Contacted",
     gymInterest: "PowerHouse Gym MG Road",
     notes: "Budget conscious, comparing prices",
+    followUps: [
+      { id: "f5", note: "Shared pricing comparison sheet.", createdAt: "2026-04-10" },
+    ],
     createdAt: "2026-04-09",
   },
   {
@@ -78,6 +99,9 @@ export const initialLeads: Lead[] = [
     status: "Lost",
     gymInterest: "Snap Fitness BTM",
     notes: "Found cheaper alternative",
+    followUps: [
+      { id: "f6", note: "Not interested anymore. Joined competitor gym.", createdAt: "2026-04-04" },
+    ],
     createdAt: "2026-04-03",
   },
   {
@@ -89,6 +113,7 @@ export const initialLeads: Lead[] = [
     status: "Contacted",
     gymInterest: "Gold's Gym Jayanagar",
     notes: "Interested in crossfit programs",
+    followUps: [],
     createdAt: "2026-04-07",
   },
 ];

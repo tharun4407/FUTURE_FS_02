@@ -9,6 +9,7 @@ import {
 } from "recharts";
 import { Link } from "react-router-dom";
 import DumbbellIcon from "@/components/DumbbellIcon";
+import RegisteredUsers from "@/components/RegisteredUsers";
 import type { Lead } from "@/data/leads";
 
 interface DashboardProps {
@@ -273,6 +274,9 @@ const Dashboard = ({ leads }: DashboardProps) => {
           </table>
         </div>
       </div>
+
+      {/* Registered Users */}
+      <RegisteredUsers />
     </div>
   );
 };

@@ -1,19 +1,23 @@
 import { useState } from "react";
-import { Search, Trash2 } from "lucide-react";
+import { Search, Trash2, Eye } from "lucide-react";
 import DumbbellIcon from "@/components/DumbbellIcon";
+import LeadDetailDialog from "@/components/LeadDetailDialog";
 import type { Lead, LeadStatus } from "@/data/leads";
 
 interface LeadsProps {
   leads: Lead[];
   updateStatus: (id: string, status: LeadStatus) => void;
   deleteLead: (id: string) => void;
+  addFollowUp: (leadId: string, note: string) => void;
+  updateLeadNotes: (id: string, notes: string) => void;
 }
 
 const statuses: LeadStatus[] = ["New", "Contacted", "Converted", "Lost"];
 
-const Leads = ({ leads, updateStatus, deleteLead }: LeadsProps) => {
+const Leads = ({ leads, updateStatus, deleteLead, addFollowUp, updateLeadNotes }: LeadsProps) => {
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<LeadStatus | "All">("All");
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   const filtered = leads.filter((l) => {
     const matchesSearch =
@@ -23,6 +27,9 @@ const Leads = ({ leads, updateStatus, deleteLead }: LeadsProps) => {
     const matchesStatus = filterStatus === "All" || l.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
+
+  // Keep selected lead in sync with leads state
+  const activeLead = selectedLead ? leads.find((l) => l.id === selectedLead.id) || null : null;
 
   return (
     <div>
@@ -74,7 +81,7 @@ const Leads = ({ leads, updateStatus, deleteLead }: LeadsProps) => {
                 <th className="text-left py-3 px-4 text-muted-foreground font-medium">Gym Interest</th>
                 <th className="text-left py-3 px-4 text-muted-foreground font-medium">Source</th>
                 <th className="text-left py-3 px-4 text-muted-foreground font-medium">Status</th>
-                <th className="text-left py-3 px-4 text-muted-foreground font-medium">Notes</th>
+                <th className="text-left py-3 px-4 text-muted-foreground font-medium">Follow-ups</th>
                 <th className="text-left py-3 px-4 text-muted-foreground font-medium">Actions</th>
               </tr>
             </thead>
@@ -99,14 +106,27 @@ const Leads = ({ leads, updateStatus, deleteLead }: LeadsProps) => {
                       ))}
                     </select>
                   </td>
-                  <td className="py-3 px-4 text-muted-foreground text-xs max-w-[200px] truncate">{lead.notes}</td>
                   <td className="py-3 px-4">
-                    <button
-                      onClick={() => deleteLead(lead.id)}
-                      className="p-2 rounded-lg text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    <span className="text-xs text-muted-foreground">
+                      {lead.followUps.length} note{lead.followUps.length !== 1 ? "s" : ""}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4">
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => setSelectedLead(lead)}
+                        className="p-2 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                        title="View details & follow-ups"
+                      >
+                        <Eye className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => deleteLead(lead.id)}
+                        className="p-2 rounded-lg text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -121,6 +141,18 @@ const Leads = ({ leads, updateStatus, deleteLead }: LeadsProps) => {
           </table>
         </div>
       </div>
+
+      {/* Lead Detail Dialog */}
+      {activeLead && (
+        <LeadDetailDialog
+          lead={activeLead}
+          open={!!activeLead}
+          onClose={() => setSelectedLead(null)}
+          onAddFollowUp={addFollowUp}
+          onUpdateNotes={updateLeadNotes}
+          onUpdateStatus={updateStatus}
+        />
+      )}
     </div>
   );
 };

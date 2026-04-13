@@ -5,7 +5,7 @@ import DumbbellIcon from "@/components/DumbbellIcon";
 import type { Lead, LeadSource, LeadStatus } from "@/data/leads";
 
 interface AddLeadProps {
-  addLead: (lead: Omit<Lead, "id" | "createdAt">) => void;
+  addLead: (lead: Omit<Lead, "id" | "createdAt" | "followUps">) => void;
 }
 
 const sources: LeadSource[] = ["Website", "Referral", "Social Media", "Walk-in", "Cold Call", "Email"];
