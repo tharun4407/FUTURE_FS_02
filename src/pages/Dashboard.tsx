@@ -274,6 +274,9 @@ const Dashboard = ({ leads }: DashboardProps) => {
           </table>
         </div>
       </div>
+
+      {/* Registered Users */}
+      <RegisteredUsers />
     </div>
   );
 };
