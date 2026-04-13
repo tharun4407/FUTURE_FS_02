@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dumbbell, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Dumbbell, Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { signIn, signUp } = useAuth();
@@ -17,13 +18,17 @@ const LoginPage = () => {
       toast.error("Please fill in all fields");
       return;
     }
+    if (isSignUp && !fullName.trim()) {
+      toast.error("Please enter your full name");
+      return;
+    }
     setLoading(true);
-    const { error } = isSignUp ? await signUp(email, password) : await signIn(email, password);
+    const { error } = isSignUp ? await signUp(email, password, fullName) : await signIn(email, password);
     setLoading(false);
     if (error) {
       toast.error(error.message);
     } else if (isSignUp) {
-      toast.success("Account created! You're now signed in.");
+      toast.success("Account created! Check your email to verify.");
     }
   };
 
@@ -54,6 +59,22 @@ const LoginPage = () => {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {isSignUp && (
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Enter your full name"
+                    className="w-full h-11 rounded-lg bg-secondary pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+            )}
+
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Email</label>
               <div className="relative">
