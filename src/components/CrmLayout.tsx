@@ -1,8 +1,14 @@
 import { ReactNode } from "react";
-import CrmSidebar from "./CrmSidebar";
+import SidebarNav from "./SidebarNav";
+import {
+  Sidebar,
+  SidebarInset,
+  SidebarTrigger,
+  SidebarRail,
+} from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut } from "lucide-react";
+import { LogOut, PanelLeft } from "lucide-react";
 
 const CrmLayout = ({ children }: { children: ReactNode }) => {
   const { user, signOut } = useAuth();
@@ -15,11 +21,15 @@ const CrmLayout = ({ children }: { children: ReactNode }) => {
     .slice(0, 2);
 
   return (
-    <div className="min-h-screen">
-      <CrmSidebar />
-      <div className="ml-64">
+    <>
+      <Sidebar side="left" variant="sidebar" collapsible="icon">
+        <SidebarRail />
+        <SidebarNav />
+      </Sidebar>
+      <SidebarInset>
         {/* Top Header Bar */}
         <header className="sticky top-0 z-40 flex items-center justify-end gap-3 border-b border-border bg-background/80 backdrop-blur px-8 py-3">
+          <SidebarTrigger />
           <span className="text-sm text-muted-foreground hidden sm:block">{fullName}</span>
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-primary/15 text-primary text-xs font-semibold">
@@ -35,8 +45,8 @@ const CrmLayout = ({ children }: { children: ReactNode }) => {
           </button>
         </header>
         <main className="p-8">{children}</main>
-      </div>
-    </div>
+      </SidebarInset>
+    </>
   );
 };
 

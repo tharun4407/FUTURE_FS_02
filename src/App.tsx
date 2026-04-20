@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -50,10 +51,34 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-              <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-              <Route path="/leads" element={<ProtectedRoute><LeadsRoute /></ProtectedRoute>} />
-              <Route path="/add-lead" element={<ProtectedRoute><AddLeadRoute /></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><SettingsRoute /></ProtectedRoute>} />
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <SidebarProvider>
+                    <Index />
+                  </SidebarProvider>
+                </ProtectedRoute>
+              } />
+              <Route path="/leads" element={
+                <ProtectedRoute>
+                  <SidebarProvider>
+                    <LeadsRoute />
+                  </SidebarProvider>
+                </ProtectedRoute>
+              } />
+              <Route path="/add-lead" element={
+                <ProtectedRoute>
+                  <SidebarProvider>
+                    <AddLeadRoute />
+                  </SidebarProvider>
+                </ProtectedRoute>
+              } />
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <SidebarProvider>
+                    <SettingsRoute />
+                  </SidebarProvider>
+                </ProtectedRoute>
+              } />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

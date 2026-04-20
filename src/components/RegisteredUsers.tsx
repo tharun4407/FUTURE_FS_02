@@ -20,7 +20,8 @@ const RegisteredUsers = () => {
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+.limit(5);
     if (!error && data) setUsers(data);
     setLoading(false);
   };
@@ -69,7 +70,7 @@ const RegisteredUsers = () => {
               </tr>
             </thead>
             <tbody>
-              {users.slice(0, 10).map((u) => (
+              {users.map((u) => (
                 <tr key={u.id} className="border-b border-border/50 hover:bg-secondary/20 transition-colors">
                   <td className="py-2 px-3">
                     <div className="flex items-center gap-2">
