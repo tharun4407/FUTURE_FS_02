@@ -2,4 +2,4 @@
 
 TODO: Document your project here
 
-Live Demo:https://futureintern-crm.netlify.app/
+Live Demo:https://futureinterns-crm-gymkart.netlify.app/
